@@ -14,11 +14,11 @@ public:
 		mainMap[kp] = val;
 	}
 
-	PairPair get1(const K1& k1){
+	PairPair& get1(const K1& k1){
 		return *mainMap.find(map1.at(k1));
 	}
 
-	PairPair get2(const K2& k2){
+	PairPair& get2(const K2& k2){
 		return *mainMap.find(map2.at(k2));
 	}
 
