@@ -10,6 +10,7 @@ int main(){
 	mmap.insert(4,5,6);
 	mmap.insert(7,8,9);
 
+
 	cout << mmap.get1(1).second << endl;
 	cout << mmap.get1(4).second << endl;
 	cout << mmap.get1(7).second << endl;
@@ -26,6 +27,9 @@ int main(){
 	}catch(...){
 		cout << "Expected exception caught\n";
 	}
+
+	mmap.erase1(4);
+	mmap.erase2(8);
 
 	getchar();
 }

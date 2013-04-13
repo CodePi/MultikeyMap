@@ -30,7 +30,7 @@ public:
 		return map2.count(k2);
 	}
 
-	void erase(const KeyPair& kp){
+	void erase(const KeyPair kp){ // need a copy, not ref
 		map1.erase(kp.first);
 		map2.erase(kp.second);
 		mainMap.erase(kp);
