@@ -37,7 +37,9 @@ int main(){
 	MMiii mmap;
 
 	mmap.insert(1,2,3);
+	mmap.insert(1,2,4);
 	mmap.insert(4,5,6);
+	mmap.insert(4,5,7);
 	mmap.insert(7,8,9);
 
 	mmap.insert(1,12,13);
