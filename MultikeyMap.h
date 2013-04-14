@@ -110,6 +110,7 @@ public:
 	bool     empty() { return mainMap.size()==0; }
 	iterator begin() { return mainMap.begin();   }
 	iterator   end() { return mainMap.end();     }
+	void     clear() { map1.clear(); map2.clear(); mainMap.clear(); }
 
 private:
 	// Maps keypair to value
