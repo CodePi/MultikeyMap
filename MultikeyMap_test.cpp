@@ -29,17 +29,14 @@ int main(){
 	mmap.insert(4,5,6);
 	mmap.insert(7,8,9);
 
+	mmap.insert(1,12,13);
+	mmap.insert(14,5,16);
+	mmap.insert(17,18,19);
 
-	cout << mmap.at1(1).second << endl;
-	cout << mmap.at1(4).second << endl;
-	cout << mmap.at1(7).second << endl;
-	cout << mmap.at2(2).second << endl;
-	cout << mmap.at2(5).second << endl;
-	cout << mmap.at2(8).second << endl;
 	cout << mmap.count1(1) << endl;
 	cout << mmap.count1(2) << endl;
 	cout << mmap.count2(1) << endl;
-	cout << mmap.count2(2) << endl;
+	cout << mmap.count2(5) << endl;
 
 	for(MMiii::iterator i=mmap.begin(); i!=mmap.end(); i++){
 		int key1 = i->first.first;
@@ -47,17 +44,22 @@ int main(){
 		int value = i->second;
 		cout << key1 << " " << key2 << " " << value << endl; 
 	}
+	cout << "-----\n";
 
-	try{
-		mmap.at1(10);
-	}catch(...){
-		cout << "Expected exception caught\n";
-	}
-
-	assert(mmap.find1(999)==mmap.end());
+	vector<MMiii::iterator> vec1 = mmap.get1(1);
+	vector<MMiii::iterator> vec2 = mmap.get2(5);
+	cout << vec1.size() << " " <<  vec2.size() << endl;
 
 	mmap.erase1(4);
 	mmap.erase2(8);
+
+	for(MMiii::iterator i=mmap.begin(); i!=mmap.end(); i++){
+		int key1 = i->first.first;
+		int key2 = i->first.second;
+		int value = i->second;
+		cout << key1 << " " << key2 << " " << value << endl; 
+	}
+	cout << "-----\n";
 
 	getchar();
 }
