@@ -68,6 +68,16 @@ public:
 		return vec;
 	}
 
+	// gets a list of all entries matching key1 and key2
+	std::vector<EntryPtr> get(const Key1& key1, const Key1& key2){
+		vector<EntryPtr> vec;
+		iterator1 i;
+		for(i = map1.lower_bound(key1); i != map1.upper_bound(key1); i++){
+			if(i->second->key2 == key2) vec.push_back(i->second);
+		}
+		return vec;
+	}
+
 	// erases entry matching EntryPtr
 	void erase_entry(EntryPtr e){
 		// remove entry from map1
@@ -93,6 +103,7 @@ public:
 	// erase of all entries matching key
 	void erase1(const Key1& key1) { erase_entry_list(get1(key1)); }
 	void erase2(const Key2& key2) { erase_entry_list(get2(key2)); }
+	void erase(const Key1& key1, const Key2& key2) { erase_entry_list(get(key1,key2)); }
 
 	// return number of entries matching key
 	int count1(const Key1& key1) { return map1.count(key1); }

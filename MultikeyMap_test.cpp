@@ -60,5 +60,9 @@ int main(){
 
 	print_map(mmap);
 
+	mmap.erase(17,18);
+
+	print_map(mmap);
+
 	getchar();
 }
