@@ -42,10 +42,9 @@ public:
 	std::vector<iterator> get1(const Key1& key1){
 		vector<iterator> vec;
 		typename std::multimap<Key1, KeyPair>::iterator i;
-		iterator j;
 		for(i = map1.lower_bound(key1); i != map1.upper_bound(key1); i++){
 			KeyPair& kp = i->second;
-			for(j = mainMap.lower_bound(kp); j != mainMap.upper_bound(kp); j++){
+			for(iterator j = mainMap.lower_bound(kp); j != mainMap.upper_bound(kp); j++){
 				vec.push_back(j);
 			}
 		}
@@ -56,10 +55,9 @@ public:
 	std::vector<iterator> get2(const Key2& key2){
 		vector<iterator> vec;
 		typename std::multimap<Key2, KeyPair>::iterator i;
-		iterator j;
 		for(i = map2.lower_bound(key2); i != map2.upper_bound(key2); i++){
 			KeyPair& kp = i->second;
-			for(j = mainMap.lower_bound(kp); j != mainMap.upper_bound(kp); j++){
+			for(iterator j = mainMap.lower_bound(kp); j != mainMap.upper_bound(kp); j++){
 				vec.push_back(j);
 			}
 		}
