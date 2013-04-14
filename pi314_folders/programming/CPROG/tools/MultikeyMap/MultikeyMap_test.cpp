@@ -29,12 +29,12 @@ int main(){
 	mmap.insert(7,8,9);
 
 
-	cout << mmap.get1(1).second << endl;
-	cout << mmap.get1(4).second << endl;
-	cout << mmap.get1(7).second << endl;
-	cout << mmap.get2(2).second << endl;
-	cout << mmap.get2(5).second << endl;
-	cout << mmap.get2(8).second << endl;
+	cout << mmap.at1(1).second << endl;
+	cout << mmap.at1(4).second << endl;
+	cout << mmap.at1(7).second << endl;
+	cout << mmap.at2(2).second << endl;
+	cout << mmap.at2(5).second << endl;
+	cout << mmap.at2(8).second << endl;
 	cout << mmap.count1(1) << endl;
 	cout << mmap.count1(2) << endl;
 	cout << mmap.count2(1) << endl;
@@ -48,7 +48,7 @@ int main(){
 	}
 
 	try{
-		mmap.get1(10);
+		mmap.at1(10);
 	}catch(...){
 		cout << "Expected exception caught\n";
 	}
