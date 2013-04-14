@@ -1,55 +1,71 @@
 #include <map>
 #include <stdexcept>
 
-template <typename K1, typename K2, typename ValType>
+// MultikeyMap: Similar to std::map, but with two keys
+
+template <typename Key1, typename Key2, typename ValType>
 class MultikeyMap{
 public:
-	typedef std::pair<K1,K2> KeyPair;
-	typedef std::pair<const KeyPair, ValType> PairPair;
 
-	void insert(const K1& k1, const K2& k2, const ValType& val){
-		KeyPair kp = make_pair(k1,k2);
-		map1[k1] = kp;
-		map2[k2] = kp;
+	// typedefs used below
+	typedef std::pair<Key1,Key2> KeyPair;
+	typedef std::pair<const KeyPair, ValType> KeyPairVal;
+
+	// Insert value into map with two keys
+	void insert(const Key1& key1, const Key2& key2, const ValType& val){
+		KeyPair kp = make_pair(key1,key2);
+		map1[key1] = kp;
+		map2[key2] = kp;
 		mainMap[kp] = val;
 	}
 
-	PairPair& get1(const K1& k1){
-		return *mainMap.find(map1.at(k1));
+	// Retrieve entry by key1 
+	KeyPairVal& get1(const Key1& key1){
+		return *mainMap.find(map1.at(key1));
 	}
 
-	PairPair& get2(const K2& k2){
-		return *mainMap.find(map2.at(k2));
+	// Retrieve entry by key2 
+	KeyPairVal& get2(const Key2& key2){
+		return *mainMap.find(map2.at(key2));
 	}
 
-	int count1(const K1& k1){
-		return map1.count(k1);
+	// Returns 1 if key1 exists (0 otherwise)
+	int count1(const Key1& key1){
+		return map1.count(key1);
 	}
 
-	int count2(const K2& k2){
-		return map2.count(k2);
+	// Returns 1 if key2 exists (0 otherwise)
+	int count2(const Key2& key2){
+		return map2.count(key2);
 	}
 
-	void erase(const KeyPair kp){ // need a copy, not ref
+	// Erases entry from map matching keypair 
+	// Note: keypair passed by copy because its deleted
+	void erase(const KeyPair kp){ 
 		map1.erase(kp.first);
 		map2.erase(kp.second);
 		mainMap.erase(kp);
 	}
 
-	void erase1(const K1& k1){
-		if(!map1.count(k1)) return;
-		erase(map1[k1]);
+	// Erases entry from map matching key1
+	void erase1(const Key1& key1){
+		if(!map1.count(key1)) return;
+		erase(map1[key1]);
 	}
 
-	void erase2(const K2& k2){
-		if(!map2.count(k2)) return;
-		erase(map2[k2]);
+	// Erases entry from map matching key2
+	void erase2(const Key2& key2){
+		if(!map2.count(key2)) return;
+		erase(map2[key2]);
 	}
 
 private:
+	// Maps keypair to value
 	std::map<KeyPair, ValType> mainMap;
-	std::map<K1, KeyPair>      map1;
-	std::map<K2, KeyPair>      map2;
+	// Maps key1 to keypair
+	std::map<Key1, KeyPair>      map1;
+	// Maps key2 to keypair
+	std::map<Key2, KeyPair>      map2;
 
 };
 
