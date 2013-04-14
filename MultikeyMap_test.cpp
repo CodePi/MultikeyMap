@@ -17,6 +17,7 @@
 
 #include "MultikeyMap.h"
 #include <iostream>
+#include <assert.h>
 
 using namespace std;
 
@@ -52,6 +53,8 @@ int main(){
 	}catch(...){
 		cout << "Expected exception caught\n";
 	}
+
+	assert(mmap.find1(999)==mmap.end());
 
 	mmap.erase1(4);
 	mmap.erase2(8);
