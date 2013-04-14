@@ -35,7 +35,7 @@ public:
 
 	// Typedefs used later
 	typedef std::tr1::shared_ptr<Entry> EntryPtr;
-	typedef typename std::multimap<Key1, EntryPtr>::iterator iterator;
+	typedef typename std::multimap<Key1, EntryPtr>::iterator iterator1;
 	typedef typename std::multimap<Key2, EntryPtr>::iterator iterator2;
 
 	// Insert value into map with two keys
@@ -51,7 +51,7 @@ public:
 	// gets a list of all entries matching key1
 	std::vector<EntryPtr> get1(const Key1& key1){
 		vector<EntryPtr> vec;
-		typename std::multimap<Key1, EntryPtr>::iterator i;
+		iterator1 i;
 		for(i = map1.lower_bound(key1); i != map1.upper_bound(key1); i++){
 			vec.push_back(i->second);
 		}
@@ -61,29 +61,31 @@ public:
 	// gets a list of all entries matching key2
 	std::vector<EntryPtr> get2(const Key2& key2){
 		vector<EntryPtr> vec;
-		typename std::multimap<Key2, EntryPtr>::iterator i;
+		iterator2 i;
 		for(i = map2.lower_bound(key2); i != map2.upper_bound(key2); i++){
 			vec.push_back(i->second);
 		}
 		return vec;
 	}
 
+	// erases entry matching EntryPtr
 	void erase_entry(EntryPtr e){
 		// remove entry from map1
-		typename std::multimap<Key1, EntryPtr>::iterator i1 = map1.lower_bound(e->key1);
+		iterator1 i1 = map1.lower_bound(e->key1);
 		while(i1 != map1.upper_bound(e->key1)){
 			if(i1->second == e) i1 = map1.erase(i1);
 			else i1++;
 		}
 
 		// remove entry from map2
-		typename std::multimap<Key2, EntryPtr>::iterator i2 = map2.lower_bound(e->key2);
+		iterator2 i2 = map2.lower_bound(e->key2);
 		while(i2 != map2.upper_bound(e->key2)){
 			if(i2->second == e) i2 = map2.erase(i2);
 			else i2++;
 		}
 	}
 
+	// erases each entry in list
 	void erase_entry_list(const std::vector<EntryPtr>& list){
 		for(size_t i=0;i<list.size(); i++) erase_entry(list[i]);
 	}
@@ -97,13 +99,13 @@ public:
 	int count2(const Key2& key2) { return map2.count(key2); }
 
 	// Implementation of standard map methods
-	size_t    size() { assert(map1.size()==map2.size()); return map1.size(); }
-	bool     empty() { return size()==0; }
-	iterator begin() { return map1.begin(); }
-	iterator   end() { return map1.end();   }
+	size_t      size() { assert(map1.size()==map2.size()); return map1.size(); }
+	bool       empty() { return size()==0; }
+	iterator1 begin1() { return map1.begin(); }
+	iterator1   end1() { return map1.end();   }
 	iterator2 begin2() { return map2.begin(); }
 	iterator2   end2() { return map2.end();   }
-	void     clear() { map1.clear(); map2.clear(); }
+	void       clear() { map1.clear(); map2.clear(); }
 
 private:
 	// Maps key1 to keypair

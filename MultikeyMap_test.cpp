@@ -24,7 +24,7 @@ using namespace std;
 typedef MultikeyMap<int, int, int> MMiii; 
 
 void print_map(MMiii& mmap){
-	for(MMiii::iterator i=mmap.begin(); i!=mmap.end(); i++){
+	for(MMiii::iterator1 i=mmap.begin1(); i!=mmap.end1(); i++){
 		MMiii::Entry& e = *i->second;
 		cout << e.key1 << " " << e.key2 << " " << e.val << endl; 
 	}
@@ -50,17 +50,13 @@ int main(){
 	cout << mmap.count2(5) << endl;
 
 	print_map(mmap);
-
+	
 	vector<MMiii::EntryPtr> vec1 = mmap.get1(1);
 	vector<MMiii::EntryPtr> vec2 = mmap.get2(5);
 	cout << vec1.size() << " " <<  vec2.size() << endl;
 
 	mmap.erase1(4);
 	mmap.erase2(8);
-
-	print_map(mmap);
-
-	//mmap.erase_keypair(make_pair(17,18));
 
 	print_map(mmap);
 
