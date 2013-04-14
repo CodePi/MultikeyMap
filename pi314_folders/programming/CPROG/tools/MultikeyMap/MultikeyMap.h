@@ -68,7 +68,7 @@ public:
 	void erase1(const Key1& key1) { erase_keypair_list(get1(key1)); }
 	void erase2(const Key2& key2) { erase_keypair_list(get2(key2)); }
 
-	// erase all keypairs in list from all 3 maps
+	// erase all matching keypairs in list from all 3 maps
 	void erase_keypair_list(const std::vector<iterator>& vec){
 		// copy keypairs to list because we are potentially erasing source
 		std::vector<KeyPair> vec_kp(vec.size());
