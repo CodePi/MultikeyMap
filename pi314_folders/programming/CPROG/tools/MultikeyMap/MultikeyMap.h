@@ -30,12 +30,14 @@ public:
 	typedef typename std::map<KeyPair, ValType>::iterator iterator;
 
 	// Implementation of standard map methods (method # refers to which key)
-	int      count1(const Key1& key1) { return map1.count(key1);            }
-	int      count2(const Key2& key2) { return map2.count(key2);            }
-	iterator  find1(const Key1& key1) { return mainMap.find(map1.at(key1)); }
-	iterator  find2(const Key2& key2) { return mainMap.find(map2.at(key2)); }
-	KeyPairVal& at1(const Key1& key1) { return *find1(key1);                }
-	KeyPairVal& at2(const Key2& key2) { return *find2(key2);                }
+	int      count1(const Key1& key1) { return map1.count(key1);                }
+	int      count2(const Key2& key2) { return map2.count(key2);                }
+	iterator  find1(const Key1& key1) { return mainMap.find(map1.at(key1));     }
+	iterator  find2(const Key2& key2) { return mainMap.find(map2.at(key2));     }
+	KeyPairVal& at1(const Key1& key1) { return *find1(key1);                    }
+	KeyPairVal& at2(const Key2& key2) { return *find2(key2);                    }
+	void     erase1(const Key1& key1) { if(map1.count(key1)) erase(map1[key1]); }
+	void     erase2(const Key2& key2) { if(map2.count(key2)) erase(map2[key2]); }
 	size_t    size() { return mainMap.size();    }
 	bool     empty() { return mainMap.size()==0; }
 	iterator begin() { return mainMap.begin();   }
@@ -55,18 +57,6 @@ public:
 		map1.erase(kp.first);
 		map2.erase(kp.second);
 		mainMap.erase(kp);
-	}
-
-	// Erases entry from map matching key1
-	void erase1(const Key1& key1){
-		if(!map1.count(key1)) return;
-		erase(map1[key1]);
-	}
-
-	// Erases entry from map matching key2
-	void erase2(const Key2& key2){
-		if(!map2.count(key2)) return;
-		erase(map2[key2]);
 	}
 
 private:
