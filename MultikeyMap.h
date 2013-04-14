@@ -37,6 +37,7 @@ public:
 	iterator find1(const Key1& key1){ return mainMap.find(map1.at(key1)); }
 	iterator find2(const Key2& key2){ return mainMap.find(map2.at(key2)); }
 	size_t size(){ return mainMap.size(); }
+	bool empty(){ return mainMap.size()==0; }
 	KeyPairVal& at1(const Key1& key1) { return *find1(key1); }
 	KeyPairVal& at2(const Key2& key2) { return *find2(key2); }
 
