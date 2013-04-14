@@ -21,7 +21,8 @@
 using namespace std;
 
 int main(){
-	MultikeyMap<int, int, int> mmap;
+	typedef MultikeyMap<int, int, int> MMiii; 
+	MMiii mmap;
 
 	mmap.insert(1,2,3);
 	mmap.insert(4,5,6);
@@ -38,6 +39,13 @@ int main(){
 	cout << mmap.count1(2) << endl;
 	cout << mmap.count2(1) << endl;
 	cout << mmap.count2(2) << endl;
+
+	for(MMiii::iterator i=mmap.begin(); i!=mmap.end(); i++){
+		int key1 = i->first.first;
+		int key2 = i->first.second;
+		int value = i->second;
+		cout << key1 << " " << key2 << " " << value << endl; 
+	}
 
 	try{
 		mmap.get1(10);

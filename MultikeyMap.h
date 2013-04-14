@@ -27,6 +27,7 @@ public:
 	// typedefs used below
 	typedef std::pair<Key1,Key2> KeyPair;
 	typedef std::pair<const KeyPair, ValType> KeyPairVal;
+	typedef typename std::map<KeyPair, ValType>::iterator iterator;
 
 	// Insert value into map with two keys
 	void insert(const Key1& key1, const Key2& key2, const ValType& val){
@@ -76,13 +77,23 @@ public:
 		erase(map2[key2]);
 	}
 
+	// Return begin iterator
+	iterator begin(){
+		return mainMap.begin();
+	}
+
+	// Return end iterator
+	iterator end(){
+		return mainMap.end();
+	}
+
 private:
 	// Maps keypair to value
 	std::map<KeyPair, ValType> mainMap;
 	// Maps key1 to keypair
-	std::map<Key1, KeyPair>      map1;
+	std::map<Key1, KeyPair>    map1;
 	// Maps key2 to keypair
-	std::map<Key2, KeyPair>      map2;
+	std::map<Key2, KeyPair>    map2;
 
 };
 
