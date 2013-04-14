@@ -64,22 +64,18 @@ public:
 		return vec;
 	}
 
-	// erase of all entries matching key1
-	void erase1(const Key1& key1) { 
-		std::vector<iterator> vec = get1(key1);
-		for(size_t i=0;i<vec.size();i++){
-			mainMap.erase(vec[i]);
-		}
-		map1.erase(key1);
-	}
+	// erase of all entries matching key
+	void erase1(const Key1& key1) { erase_keypair_list(get1(key1)); }
+	void erase2(const Key2& key2) { erase_keypair_list(get2(key2)); }
 
-	// erase of all entries matching key2
-	void erase2(const Key2& key2) { 
-		std::vector<iterator> vec = get2(key2);
-		for(size_t i=0;i<vec.size();i++){
-			mainMap.erase(vec[i]);
-		}
-		map2.erase(key2);
+	// erase all keypairs in list from all 3 maps
+	void erase_keypair_list(const std::vector<iterator>& vec){
+		// copy keypairs to list because we are potentially erasing source
+		std::vector<KeyPair> vec_kp(vec.size());
+		for(size_t i=0;i<vec.size();i++) vec_kp[i] = vec[i]->first;
+
+		// erase keypairs
+		for(size_t i=0;i<vec_kp.size();i++) erase_keypair(vec_kp[i]);
 	}
 
 	// erase all entries in all 3 maps matching keypair
