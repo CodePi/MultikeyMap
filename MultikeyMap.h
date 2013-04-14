@@ -29,32 +29,23 @@ public:
 	typedef std::pair<const KeyPair, ValType> KeyPairVal;
 	typedef typename std::map<KeyPair, ValType>::iterator iterator;
 
+	// Implementation of standard map methods (method # refers to which key)
+	int count1(const Key1& key1){ return map1.count(key1); }
+	int count2(const Key2& key2){ return map2.count(key2); }
+	iterator begin(){ return mainMap.begin(); }
+	iterator end()  { return mainMap.end();   }
+	iterator find1(const Key1& key1){ return mainMap.find(map1.at(key1)); }
+	iterator find2(const Key2& key2){ return mainMap.find(map2.at(key2)); }
+	size_t size(){ return mainMap.size(); }
+	KeyPairVal& at1(const Key1& key1) { return *find1(key1); }
+	KeyPairVal& at2(const Key2& key2) { return *find2(key2); }
+
 	// Insert value into map with two keys
 	void insert(const Key1& key1, const Key2& key2, const ValType& val){
 		KeyPair kp = make_pair(key1,key2);
 		map1[key1] = kp;
 		map2[key2] = kp;
 		mainMap[kp] = val;
-	}
-
-	// Retrieve entry by key1 
-	KeyPairVal& get1(const Key1& key1){
-		return *mainMap.find(map1.at(key1));
-	}
-
-	// Retrieve entry by key2 
-	KeyPairVal& get2(const Key2& key2){
-		return *mainMap.find(map2.at(key2));
-	}
-
-	// Returns 1 if key1 exists (0 otherwise)
-	int count1(const Key1& key1){
-		return map1.count(key1);
-	}
-
-	// Returns 1 if key2 exists (0 otherwise)
-	int count2(const Key2& key2){
-		return map2.count(key2);
 	}
 
 	// Erases entry from map matching keypair 
@@ -75,16 +66,6 @@ public:
 	void erase2(const Key2& key2){
 		if(!map2.count(key2)) return;
 		erase(map2[key2]);
-	}
-
-	// Return begin iterator
-	iterator begin(){
-		return mainMap.begin();
-	}
-
-	// Return end iterator
-	iterator end(){
-		return mainMap.end();
 	}
 
 private:
