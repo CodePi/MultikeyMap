@@ -30,13 +30,13 @@ public:
 	typedef std::pair<const KeyPair, ValType> KeyPairVal;
 	typedef typename std::multimap<KeyPair, ValType>::iterator iterator;
 
-	// Implementation of standard map methods (method # refers to which key)
-	int      count1(const Key1& key1) { return map1.count(key1); }
-	int      count2(const Key2& key2) { return map2.count(key2); }
-	size_t    size() { return mainMap.size();    }
-	bool     empty() { return mainMap.size()==0; }
-	iterator begin() { return mainMap.begin();   }
-	iterator   end() { return mainMap.end();     }
+	// Insert value into map with two keys
+	void insert(const Key1& key1, const Key2& key2, const ValType& val){
+		KeyPair kp = make_pair(key1,key2);
+		map1.insert(make_pair(key1,kp));
+		map2.insert(make_pair(key2,kp));
+		mainMap.insert(make_pair(kp,val));
+	}
 
 	// gets a list of all entries matching key1
 	std::vector<iterator> get1(const Key1& key1){
@@ -64,14 +64,6 @@ public:
 			}
 		}
 		return vec;
-	}
-
-	// Insert value into map with two keys
-	void insert(const Key1& key1, const Key2& key2, const ValType& val){
-		KeyPair kp = make_pair(key1,key2);
-		map1.insert(make_pair(key1,kp));
-		map2.insert(make_pair(key2,kp));
-		mainMap.insert(make_pair(kp,val));
 	}
 
 	// erase of all entries matching key1
@@ -109,6 +101,16 @@ public:
 			else i2++;
 		}
 	}
+
+	// return number of entries matching key
+	int count1(const Key1& key1) { return map1.count(key1); }
+	int count2(const Key2& key2) { return map2.count(key2); }
+
+	// Implementation of standard map methods
+	size_t    size() { return mainMap.size();    }
+	bool     empty() { return mainMap.size()==0; }
+	iterator begin() { return mainMap.begin();   }
+	iterator   end() { return mainMap.end();     }
 
 private:
 	// Maps keypair to value
