@@ -17,8 +17,9 @@
 
 #include <map>
 #include <stdexcept>
+#include <vector>
 
-// MultikeyMap: Similar to std::map, but with two keys
+// MultikeyMap: Similar to std::multimap, but with two keys
 
 template <typename Key1, typename Key2, typename ValType>
 class MultikeyMap{
@@ -27,45 +28,76 @@ public:
 	// typedefs used below
 	typedef std::pair<Key1,Key2> KeyPair;
 	typedef std::pair<const KeyPair, ValType> KeyPairVal;
-	typedef typename std::map<KeyPair, ValType>::iterator iterator;
+	typedef typename std::multimap<KeyPair, ValType>::iterator iterator;
 
 	// Implementation of standard map methods (method # refers to which key)
-	int      count1(const Key1& key1) { return map1.count(key1);                }
-	int      count2(const Key2& key2) { return map2.count(key2);                }
-	iterator  find1(const Key1& key1) { return count1(key1) ? mainMap.find(map1[key1]) : end(); }
-	iterator  find2(const Key2& key2) { return count2(key2) ? mainMap.find(map2[key2]) : end(); }
-	KeyPairVal& at1(const Key1& key1) { return *mainMap.find(map1.at(key1));    }
-	KeyPairVal& at2(const Key2& key2) { return *mainMap.find(map2.at(key2));    }
-	void     erase1(const Key1& key1) { if(map1.count(key1)) erase(map1[key1]); }
-	void     erase2(const Key2& key2) { if(map2.count(key2)) erase(map2[key2]); }
+	int      count1(const Key1& key1) { return map1.count(key1); }
+	int      count2(const Key2& key2) { return map2.count(key2); }
 	size_t    size() { return mainMap.size();    }
 	bool     empty() { return mainMap.size()==0; }
 	iterator begin() { return mainMap.begin();   }
 	iterator   end() { return mainMap.end();     }
 
+	// gets a list of all entries matching key1
+	std::vector<iterator> get1(const Key1& key1){
+		vector<iterator> vec;
+		typename std::multimap<Key1, KeyPair>::iterator i;
+		iterator j;
+		for(i = map1.lower_bound(key1); i != map1.upper_bound(key1); i++){
+			KeyPair& kp = i->second;
+			for(j = mainMap.lower_bound(kp); j != mainMap.upper_bound(kp); j++){
+				vec.push_back(j);
+			}
+		}
+		return vec;
+	}
+
+	// gets a list of all entries matching key2
+	std::vector<iterator> get2(const Key2& key2){
+		vector<iterator> vec;
+		typename std::multimap<Key2, KeyPair>::iterator i;
+		iterator j;
+		for(i = map2.lower_bound(key2); i != map2.upper_bound(key2); i++){
+			KeyPair& kp = i->second;
+			for(j = mainMap.lower_bound(kp); j != mainMap.upper_bound(kp); j++){
+				vec.push_back(j);
+			}
+		}
+		return vec;
+	}
+
 	// Insert value into map with two keys
 	void insert(const Key1& key1, const Key2& key2, const ValType& val){
 		KeyPair kp = make_pair(key1,key2);
-		map1[key1] = kp;
-		map2[key2] = kp;
-		mainMap[kp] = val;
+		map1.insert(make_pair(key1,kp));
+		map2.insert(make_pair(key2,kp));
+		mainMap.insert(make_pair(kp,val));
 	}
 
-	// Erases entry from map matching keypair 
-	// Note: keypair passed by copy because its deleted
-	void erase(const KeyPair kp){ 
-		map1.erase(kp.first);
-		map2.erase(kp.second);
-		mainMap.erase(kp);
+	// erase of all entries matching key1
+	void erase1(const Key1& key1) { 
+		std::vector<iterator> vec = get1(key1);
+		for(size_t i=0;i<vec.size();i++){
+			mainMap.erase(vec[i]);
+		}
+		map1.erase(key1);
+	}
+
+	// erase of all entries matching key2
+	void erase2(const Key2& key2) { 
+		std::vector<iterator> vec = get2(key2);
+		for(size_t i=0;i<vec.size();i++){
+			mainMap.erase(vec[i]);
+		}
+		map2.erase(key2);
 	}
 
 private:
 	// Maps keypair to value
-	std::map<KeyPair, ValType> mainMap;
+	std::multimap<KeyPair, ValType> mainMap;
 	// Maps key1 to keypair
-	std::map<Key1, KeyPair>    map1;
+	std::multimap<Key1, KeyPair>    map1;
 	// Maps key2 to keypair
-	std::map<Key2, KeyPair>    map2;
-
+	std::multimap<Key2, KeyPair>    map2;
 };
 
