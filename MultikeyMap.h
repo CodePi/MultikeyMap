@@ -82,6 +82,7 @@ public:
 		map2.erase(key2);
 	}
 
+	// erase all entries in all 3 maps matching keypair
 	void erase_keypair(const KeyPair& kp){
 		mainMap.erase(kp);
 
