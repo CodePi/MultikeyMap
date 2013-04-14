@@ -30,16 +30,16 @@ public:
 	typedef typename std::map<KeyPair, ValType>::iterator iterator;
 
 	// Implementation of standard map methods (method # refers to which key)
-	int count1(const Key1& key1){ return map1.count(key1); }
-	int count2(const Key2& key2){ return map2.count(key2); }
-	iterator begin(){ return mainMap.begin(); }
-	iterator end()  { return mainMap.end();   }
-	iterator find1(const Key1& key1){ return mainMap.find(map1.at(key1)); }
-	iterator find2(const Key2& key2){ return mainMap.find(map2.at(key2)); }
-	size_t size(){ return mainMap.size(); }
-	bool empty(){ return mainMap.size()==0; }
-	KeyPairVal& at1(const Key1& key1) { return *find1(key1); }
-	KeyPairVal& at2(const Key2& key2) { return *find2(key2); }
+	int      count1(const Key1& key1) { return map1.count(key1);            }
+	int      count2(const Key2& key2) { return map2.count(key2);            }
+	iterator  find1(const Key1& key1) { return mainMap.find(map1.at(key1)); }
+	iterator  find2(const Key2& key2) { return mainMap.find(map2.at(key2)); }
+	KeyPairVal& at1(const Key1& key1) { return *find1(key1);                }
+	KeyPairVal& at2(const Key2& key2) { return *find2(key2);                }
+	size_t    size() { return mainMap.size();    }
+	bool     empty() { return mainMap.size()==0; }
+	iterator begin() { return mainMap.begin();   }
+	iterator   end() { return mainMap.end();     }
 
 	// Insert value into map with two keys
 	void insert(const Key1& key1, const Key2& key2, const ValType& val){
