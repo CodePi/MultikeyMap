@@ -18,6 +18,7 @@
 #include <map>
 #include <stdexcept>
 #include <vector>
+#include <memory>
 
 // MultikeyMap: Similar to std::multimap, but with two keys
 
@@ -25,109 +26,89 @@ template <typename Key1, typename Key2, typename ValType>
 class MultikeyMap{
 public:
 
-	// typedefs used below
-	typedef std::pair<Key1,Key2> KeyPair;
-	typedef std::pair<const KeyPair, ValType> KeyPairVal;
-	typedef typename std::multimap<KeyPair, ValType>::iterator iterator;
+	// basic map entry
+	struct Entry {
+		Key1 key1;
+		Key2 key2;
+		ValType val;
+	};
+
+	// Typedefs used later
+	typedef std::tr1::shared_ptr<Entry> EntryPtr;
+	typedef typename std::multimap<Key1, EntryPtr>::iterator iterator;
+	typedef typename std::multimap<Key2, EntryPtr>::iterator iterator2;
 
 	// Insert value into map with two keys
 	void insert(const Key1& key1, const Key2& key2, const ValType& val){
-		KeyPair kp = make_pair(key1,key2);
-		map1.insert(make_pair(key1,kp));
-		map2.insert(make_pair(key2,kp));
-		mainMap.insert(make_pair(kp,val));
+		EntryPtr e(new Entry);
+		e->key1 = key1;
+		e->key2 = key2;
+		e->val = val;
+		map1.insert(make_pair(key1,e));
+		map2.insert(make_pair(key2,e));
 	}
 
 	// gets a list of all entries matching key1
-	std::vector<iterator> get1(const Key1& key1){
-		vector<iterator> vec;
-		typename std::multimap<Key1, KeyPair>::iterator i;
-		KeyPair* lastKp = NULL;
+	std::vector<EntryPtr> get1(const Key1& key1){
+		vector<EntryPtr> vec;
+		typename std::multimap<Key1, EntryPtr>::iterator i;
 		for(i = map1.lower_bound(key1); i != map1.upper_bound(key1); i++){
-			KeyPair& kp = i->second;
-
-			// if kp same as last, skip
-			if(lastKp && kp==*lastKp) continue;
-
-			// push_back iterator for each match
-			for(iterator j = mainMap.lower_bound(kp); j != mainMap.upper_bound(kp); j++){
-				vec.push_back(j);
-			}
-			lastKp = &kp;
+			vec.push_back(i->second);
 		}
 		return vec;
 	}
 
 	// gets a list of all entries matching key2
-	std::vector<iterator> get2(const Key2& key2){
-		vector<iterator> vec;
-		typename std::multimap<Key2, KeyPair>::iterator i;
-		KeyPair* lastKp = NULL;
+	std::vector<EntryPtr> get2(const Key2& key2){
+		vector<EntryPtr> vec;
+		typename std::multimap<Key2, EntryPtr>::iterator i;
 		for(i = map2.lower_bound(key2); i != map2.upper_bound(key2); i++){
-			KeyPair& kp = i->second;
-
-			// if kp same as last, skip
-			if(lastKp && kp==*lastKp) continue;
-
-			// push_back iterator for each match
-			for(iterator j = mainMap.lower_bound(kp); j != mainMap.upper_bound(kp); j++){
-				vec.push_back(j);
-			}
-			lastKp = &kp;
+			vec.push_back(i->second);
 		}
 		return vec;
 	}
 
-	// erase of all entries matching key
-	void erase1(const Key1& key1) { erase_keypair_list(get1(key1)); }
-	void erase2(const Key2& key2) { erase_keypair_list(get2(key2)); }
-
-	// erase all matching keypairs in list from all 3 maps
-	void erase_keypair_list(const std::vector<iterator>& vec){
-		// copy keypairs to list because we are potentially erasing source
-		std::vector<KeyPair> vec_kp(vec.size());
-		for(size_t i=0;i<vec.size();i++) vec_kp[i] = vec[i]->first;
-
-		// erase keypairs
-		for(size_t i=0;i<vec_kp.size();i++) erase_keypair(vec_kp[i]);
-	}
-
-	// erase all entries in all 3 maps matching keypair
-	void erase_keypair(const KeyPair& kp){
-		mainMap.erase(kp);
-
-		// erase from map1
-		typename std::multimap<Key1, KeyPair>::iterator i1 = map1.lower_bound(kp.first);
-		while(i1 != map1.upper_bound(kp.first)){
-			if(kp == i1->second) i1=map1.erase(i1);
+	void erase_entry(EntryPtr e){
+		// remove entry from map1
+		typename std::multimap<Key1, EntryPtr>::iterator i1 = map1.lower_bound(e->key1);
+		while(i1 != map1.upper_bound(e->key1)){
+			if(i1->second == e) i1 = map1.erase(i1);
 			else i1++;
 		}
 
-		// erase from map2
-		typename std::multimap<Key2, KeyPair>::iterator i2 = map2.lower_bound(kp.second);
-		while(i2 != map2.upper_bound(kp.second)){
-			if(kp == i2->second) i2=map2.erase(i2);
+		// remove entry from map2
+		typename std::multimap<Key2, EntryPtr>::iterator i2 = map2.lower_bound(e->key2);
+		while(i2 != map2.upper_bound(e->key2)){
+			if(i2->second == e) i2 = map2.erase(i2);
 			else i2++;
 		}
 	}
+
+	void erase_entry_list(const std::vector<EntryPtr>& list){
+		for(size_t i=0;i<list.size(); i++) erase_entry(list[i]);
+	}
+
+	// erase of all entries matching key
+	void erase1(const Key1& key1) { erase_entry_list(get1(key1)); }
+	void erase2(const Key2& key2) { erase_entry_list(get2(key2)); }
 
 	// return number of entries matching key
 	int count1(const Key1& key1) { return map1.count(key1); }
 	int count2(const Key2& key2) { return map2.count(key2); }
 
 	// Implementation of standard map methods
-	size_t    size() { return mainMap.size();    }
-	bool     empty() { return mainMap.size()==0; }
-	iterator begin() { return mainMap.begin();   }
-	iterator   end() { return mainMap.end();     }
-	void     clear() { map1.clear(); map2.clear(); mainMap.clear(); }
+	size_t    size() { assert(map1.size()==map2.size()); return map1.size(); }
+	bool     empty() { return size()==0; }
+	iterator begin() { return map1.begin(); }
+	iterator   end() { return map1.end();   }
+	iterator2 begin2() { return map2.begin(); }
+	iterator2   end2() { return map2.end();   }
+	void     clear() { map1.clear(); map2.clear(); }
 
 private:
-	// Maps keypair to value
-	std::multimap<KeyPair, ValType> mainMap;
 	// Maps key1 to keypair
-	std::multimap<Key1, KeyPair>    map1;
+	std::multimap<Key1, EntryPtr> map1;
 	// Maps key2 to keypair
-	std::multimap<Key2, KeyPair>    map2;
+	std::multimap<Key2, EntryPtr> map2;
 };
 
