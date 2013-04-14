@@ -21,8 +21,19 @@
 
 using namespace std;
 
+typedef MultikeyMap<int, int, int> MMiii; 
+
+void print_map(MMiii& mmap){
+	for(MMiii::iterator i=mmap.begin(); i!=mmap.end(); i++){
+		int key1 = i->first.first;
+		int key2 = i->first.second;
+		int value = i->second;
+		cout << key1 << " " << key2 << " " << value << endl; 
+	}
+	cout << "-----\n";
+}
+
 int main(){
-	typedef MultikeyMap<int, int, int> MMiii; 
 	MMiii mmap;
 
 	mmap.insert(1,2,3);
@@ -38,13 +49,7 @@ int main(){
 	cout << mmap.count2(1) << endl;
 	cout << mmap.count2(5) << endl;
 
-	for(MMiii::iterator i=mmap.begin(); i!=mmap.end(); i++){
-		int key1 = i->first.first;
-		int key2 = i->first.second;
-		int value = i->second;
-		cout << key1 << " " << key2 << " " << value << endl; 
-	}
-	cout << "-----\n";
+	print_map(mmap);
 
 	vector<MMiii::iterator> vec1 = mmap.get1(1);
 	vector<MMiii::iterator> vec2 = mmap.get2(5);
@@ -53,13 +58,11 @@ int main(){
 	mmap.erase1(4);
 	mmap.erase2(8);
 
-	for(MMiii::iterator i=mmap.begin(); i!=mmap.end(); i++){
-		int key1 = i->first.first;
-		int key2 = i->first.second;
-		int value = i->second;
-		cout << key1 << " " << key2 << " " << value << endl; 
-	}
-	cout << "-----\n";
+	print_map(mmap);
+
+	mmap.erase_keypair(make_pair(17,18));
+
+	print_map(mmap);
 
 	getchar();
 }

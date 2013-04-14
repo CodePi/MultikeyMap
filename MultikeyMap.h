@@ -92,6 +92,24 @@ public:
 		map2.erase(key2);
 	}
 
+	void erase_keypair(const KeyPair& kp){
+		mainMap.erase(kp);
+
+		// erase from map1
+		typename std::multimap<Key1, KeyPair>::iterator i1 = map1.lower_bound(kp.first);
+		while(i1 != map1.upper_bound(kp.first)){
+			if(kp == i1->second) i1=map1.erase(i1);
+			else i1++;
+		}
+
+		// erase from map2
+		typename std::multimap<Key2, KeyPair>::iterator i2 = map2.lower_bound(kp.second);
+		while(i2 != map2.upper_bound(kp.second)){
+			if(kp == i2->second) i2=map2.erase(i2);
+			else i2++;
+		}
+	}
+
 private:
 	// Maps keypair to value
 	std::multimap<KeyPair, ValType> mainMap;
