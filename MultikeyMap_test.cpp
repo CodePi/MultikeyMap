@@ -20,6 +20,7 @@
 #include <assert.h>
 
 using namespace std;
+using namespace codepi;
 
 typedef MultikeyMap<int, int, int> MMiii; 
 
@@ -64,5 +65,7 @@ int main(){
 
 	print_map(mmap);
 
+	#ifdef WIN32
 	getchar();
+	#endif
 }

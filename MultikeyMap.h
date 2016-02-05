@@ -20,6 +20,8 @@
 #include <vector>
 #include <memory>
 
+namespace codepi{
+
 // MultikeyMap: Similar to std::multimap, but with two keys
 
 template <typename Key1, typename Key2, typename ValType>
@@ -34,7 +36,7 @@ public:
 	};
 
 	// Typedefs used later
-	typedef std::tr1::shared_ptr<Entry> EntryPtr;
+	typedef std::shared_ptr<Entry> EntryPtr;
 	typedef typename std::multimap<Key1, EntryPtr>::iterator iterator1;
 	typedef typename std::multimap<Key2, EntryPtr>::iterator iterator2;
 
@@ -50,7 +52,7 @@ public:
 
 	// gets a list of all entries matching key1
 	std::vector<EntryPtr> get1(const Key1& key1){
-		vector<EntryPtr> vec;
+		std::vector<EntryPtr> vec;
 		iterator1 i;
 		for(i = map1.lower_bound(key1); i != map1.upper_bound(key1); i++){
 			vec.push_back(i->second);
@@ -60,7 +62,7 @@ public:
 
 	// gets a list of all entries matching key2
 	std::vector<EntryPtr> get2(const Key2& key2){
-		vector<EntryPtr> vec;
+		std::vector<EntryPtr> vec;
 		iterator2 i;
 		for(i = map2.lower_bound(key2); i != map2.upper_bound(key2); i++){
 			vec.push_back(i->second);
@@ -70,7 +72,7 @@ public:
 
 	// gets a list of all entries matching key1 and key2
 	std::vector<EntryPtr> get(const Key1& key1, const Key1& key2){
-		vector<EntryPtr> vec;
+		std::vector<EntryPtr> vec;
 		iterator1 i;
 		for(i = map1.lower_bound(key1); i != map1.upper_bound(key1); i++){
 			if(i->second->key2 == key2) vec.push_back(i->second);
@@ -125,3 +127,4 @@ private:
 	std::multimap<Key2, EntryPtr> map2;
 };
 
+} // end namespace codepi
