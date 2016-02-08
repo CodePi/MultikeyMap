@@ -33,13 +33,7 @@ void print_map(MMiii& mmap){
 }
 
 int main(){
-	MMiii mmap;
-
-	mmap.insert(1,2,3);
-	mmap.insert(1,2,4);
-	mmap.insert(4,5,6);
-	mmap.insert(4,5,7);
-	mmap.insert(7,8,9);
+	MMiii mmap = { {1,2,3}, {1,2,4}, {4,5,6}, {4,5,7}, {7,8,9} };
 
 	mmap.insert(1,12,13);
 	mmap.insert(14,5,16);

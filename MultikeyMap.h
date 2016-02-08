@@ -35,6 +35,13 @@ public:
 		ValType val;
 	};
 
+	// Constructor
+	MultikeyMap(std::initializer_list<Entry> list){
+		for (auto& e : list){
+			insert(e.key1, e.key2, e.val);
+		}
+	}
+
 	// Typedefs used later
 	typedef std::shared_ptr<Entry> EntryPtr;
 	typedef typename std::multimap<Key1, EntryPtr>::iterator iterator1;
