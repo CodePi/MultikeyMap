@@ -29,7 +29,6 @@ Compiles with C++11 compatible compilers. Tested with gcc 4.4 and Visual Studio 
   for(auto& e : mm.get2("c")){
     cout << e->key1 << " " << e->key2 << " " << e->val << endl;
   }
-}
 ```
 
 #### Useful methods
