@@ -5,13 +5,6 @@ Compiles with C++11 compatible compilers. Tested with gcc 4.4 and Visual Studio 
 
 ### Example usage
 ``` cpp
-#include "../MultikeyMap.h"
-#include <iostream>
-
-using namespace std;
-using namespace codepi;
-
-int main(){
   MultikeyMap < int, string, string > mm = {
     {1, "a", "red" },
     {2, "b", "green" },
