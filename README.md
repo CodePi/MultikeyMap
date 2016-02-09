@@ -50,7 +50,7 @@ public:
         // Insert value into map with two keys
         void insert(const Key1& key1, const Key2& key2, const ValType& val);
         void insert(Entry&& entry);        
-        void insert(const Entrn& entry);        
+        void insert(const Entry& entry);        
 
         // gets a list of all entries matching key1
         std::vector<EntryPtr> get1(const Key1& key1);
