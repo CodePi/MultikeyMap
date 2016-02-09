@@ -25,9 +25,8 @@ using namespace codepi;
 typedef MultikeyMap<int, int, int> MMiii; 
 
 void print_map(MMiii& mmap){
-	for(MMiii::iterator1 i=mmap.begin1(); i!=mmap.end1(); i++){
-		MMiii::Entry& e = *i->second;
-		cout << e.key1 << " " << e.key2 << " " << e.val << endl; 
+	for(auto& p : mmap){
+		cout << p.second->key1 << " " << p.second->key2 << " " << p.second->val << endl; 
 	}
 	cout << "-----\n";
 }

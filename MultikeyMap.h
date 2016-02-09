@@ -135,6 +135,8 @@ public:
 	// Implementation of standard map methods
 	size_t      size() { assert(map1.size()==map2.size()); return map1.size(); }
 	bool       empty() { return size()==0; }
+	iterator1 begin () { return map1.begin(); }
+	iterator1   end () { return map1.end();   }
 	iterator1 begin1() { return map1.begin(); }
 	iterator1   end1() { return map1.end();   }
 	iterator2 begin2() { return map2.begin(); }
