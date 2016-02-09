@@ -39,6 +39,8 @@ int main(){
 	mmap.insert(14,5,16);
 	mmap.insert(17,18,19);
 
+	mmap.insert({21,22,23});
+
 	cout << mmap.count1(1) << endl;
 	cout << mmap.count1(2) << endl;
 	cout << mmap.count2(1) << endl;

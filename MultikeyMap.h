@@ -38,7 +38,7 @@ public:
 	// Constructor
 	MultikeyMap(std::initializer_list<Entry> list){
 		for (auto& e : list){
-			insert(e.key1, e.key2, e.val);
+			insert(e);
 		}
 	}
 
@@ -55,6 +55,20 @@ public:
 		e->val = val;
 		map1.insert(make_pair(key1,e));
 		map2.insert(make_pair(key2,e));
+	}
+
+	// Insert entry into map
+	void insert(Entry&& entry){
+		EntryPtr ep(new Entry(std::move(entry)));
+		map1.insert(make_pair(ep->key1, ep));
+		map2.insert(make_pair(ep->key2, ep));
+	}
+
+	// Insert entry into map
+	void insert(const Entry& entry){
+		EntryPtr ep(new Entry(entry));
+		map1.insert(make_pair(ep->key1, ep));
+		map2.insert(make_pair(ep->key2, ep));
 	}
 
 	// gets a list of all entries matching key1
