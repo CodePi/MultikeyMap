@@ -76,12 +76,13 @@ public:
         // return number of entries matching key
         int count1(const Key1& key1);
         int count2(const Key2& key2);
+        int count(const Key1& key1, const Key2& key2);
 
         // Implementation of standard map methods
         size_t      size();
         bool       empty();
-        iterator1  begin();
-        iterator1    end();
+        iterator   begin();
+        iterator     end();
         iterator1 begin1();
         iterator1   end1();
         iterator2 begin2();

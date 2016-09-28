@@ -46,6 +46,7 @@ public:
 	typedef std::shared_ptr<Entry> EntryPtr;
 	typedef typename std::multimap<Key1, EntryPtr>::iterator iterator1;
 	typedef typename std::multimap<Key2, EntryPtr>::iterator iterator2;
+	typedef typename std::multimap<std::pair<Key1, Key2>, EntryPtr>::iterator iterator;
 
 	// Insert value into map with two keys
 	void insert(const Key1& key1, const Key2& key2, const ValType& val){
@@ -68,8 +69,9 @@ public:
 	}
 
 	void insert(EntryPtr ep){
-		map1.insert(make_pair(ep->key1, ep));
-		map2.insert(make_pair(ep->key2, ep));
+		map1.insert(std::make_pair(ep->key1, ep));
+		map2.insert(std::make_pair(ep->key2, ep));
+		mapAll.insert(std::make_pair(std::make_pair(ep->key1, ep->key2), ep));
 	}
 	
 	// gets a list of all entries matching key1
@@ -95,9 +97,10 @@ public:
 	// gets a list of all entries matching key1 and key2
 	std::vector<EntryPtr> get(const Key1& key1, const Key1& key2){
 		std::vector<EntryPtr> vec;
-		iterator1 i;
-		for(i = map1.lower_bound(key1); i != map1.upper_bound(key1); i++){
-			if(i->second->key2 == key2) vec.push_back(i->second);
+		iterator i;
+		auto keys = std::make_pair(key1, key2);
+		for(i = mapAll.lower_bound(keys); i != mapAll.upper_bound(keys); i++){
+			vec.push_back(i->second);
 		}
 		return vec;
 	}
@@ -117,6 +120,14 @@ public:
 			if(i2->second == e) i2 = map2.erase(i2);
 			else i2++;
 		}
+
+		// remove entry from mapAll
+		auto keys = std::make_pair(e->key1, e->key2);
+		iterator i3 = mapAll.lower_bound(keys);
+		while(i3 != mapAll.upper_bound(keys)){
+			if(i3->second == e) i3 = mapAll.erase(i3);
+			else i3++;
+		}
 	}
 
 	// erases each entry in list
@@ -132,23 +143,28 @@ public:
 	// return number of entries matching key
 	int count1(const Key1& key1) { return map1.count(key1); }
 	int count2(const Key2& key2) { return map2.count(key2); }
-
+	int count(const Key1& key1, const Key2& key2) {
+	  return mapAll.count(std::make_pair(key1, key2));
+	}
+	
 	// Implementation of standard map methods
-	size_t      size() { assert(map1.size()==map2.size()); return map1.size(); }
+	size_t      size() { return mapAll.size(); }
 	bool       empty() { return size()==0; }
-	iterator1 begin () { return map1.begin(); }
-	iterator1   end () { return map1.end();   }
+	iterator  begin () { return mapAll.begin(); }
+	iterator    end () { return mapAll.end();   }
 	iterator1 begin1() { return map1.begin(); }
 	iterator1   end1() { return map1.end();   }
 	iterator2 begin2() { return map2.begin(); }
 	iterator2   end2() { return map2.end();   }
-	void       clear() { map1.clear(); map2.clear(); }
+	void       clear() { map1.clear(); map2.clear(); mapAll.clear(); }
 
 private:
 	// Maps key1 to keypair
 	std::multimap<Key1, EntryPtr> map1;
 	// Maps key2 to keypair
 	std::multimap<Key2, EntryPtr> map2;
+	// Maps key2 to keypair
+	std::multimap<std::pair<Key1, Key2>, EntryPtr> mapAll;
 };
 
 } // end namespace codepi
