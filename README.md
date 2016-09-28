@@ -48,6 +48,7 @@ public:
         MultikeyMap(std::initializer_list<Entry> list);
         
         // Insert value into map with two keys
+        void insert(const Key1& key1, const Key2& key2, ValType&& val);
         void insert(const Key1& key1, const Key2& key2, const ValType& val);
         void insert(Entry&& entry);        
         void insert(const Entry& entry);        
@@ -79,6 +80,8 @@ public:
         // Implementation of standard map methods
         size_t      size();
         bool       empty();
+        iterator1  begin();
+        iterator1    end();
         iterator1 begin1();
         iterator1   end1();
         iterator2 begin2();

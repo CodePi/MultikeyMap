@@ -49,28 +49,29 @@ public:
 
 	// Insert value into map with two keys
 	void insert(const Key1& key1, const Key2& key2, const ValType& val){
-		EntryPtr e(new Entry);
-		e->key1 = key1;
-		e->key2 = key2;
-		e->val = val;
-		map1.insert(make_pair(key1,e));
-		map2.insert(make_pair(key2,e));
+		insert(EntryPtr(new Entry{key1, key2, val}));
+	}
+
+	// Insert value into map with two keys
+	void insert(const Key1& key1, const Key2& key2, ValType&& val){
+		insert(EntryPtr(new Entry{key1, key2, std::move(val)}));
 	}
 
 	// Insert entry into map
 	void insert(Entry&& entry){
-		EntryPtr ep(new Entry(std::move(entry)));
-		map1.insert(make_pair(ep->key1, ep));
-		map2.insert(make_pair(ep->key2, ep));
+		insert(EntryPtr(new Entry(std::move(entry))));
 	}
 
 	// Insert entry into map
 	void insert(const Entry& entry){
-		EntryPtr ep(new Entry(entry));
+		insert(EntryPtr(new Entry(entry)));
+	}
+
+	void insert(EntryPtr ep){
 		map1.insert(make_pair(ep->key1, ep));
 		map2.insert(make_pair(ep->key2, ep));
 	}
-
+	
 	// gets a list of all entries matching key1
 	std::vector<EntryPtr> get1(const Key1& key1){
 		std::vector<EntryPtr> vec;
