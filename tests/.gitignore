@@ -2,3 +2,10 @@
 MultikeyMap_test
 MultikeyMap_test2
 *.exe
+Debug
+Release
+x64
+*.opensdf
+*.sdf
+*.suo
+*.vcxproj.user
