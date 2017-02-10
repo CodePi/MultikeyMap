@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo --------------------------
 echo MultikeyMap_test
 ./MultikeyMap_test
