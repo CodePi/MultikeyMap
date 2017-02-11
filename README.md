@@ -1,7 +1,7 @@
 # MultikeyMap
 Similar to std::map but indexable by two keys.  Header-only.
 
-Compiles with C++11 compatible compilers. Tested with gcc 4.4 and Visual Studio 2012.
+Compiles with C++11 compatible compilers. Tested with gcc 4.7 and Visual Studio 2012.
 
 ### Example usage
 ``` cpp
