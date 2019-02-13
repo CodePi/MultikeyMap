@@ -2,11 +2,9 @@
 
 set -e
 
-TAG="$1"
-
 echo --------------------------
-echo ${TAG}MultikeyMap_test
-./${TAG}MultikeyMap_test
+echo MultikeyMap_test
+./MultikeyMap_test
 echo --------------------------
-echo ${TAG}MultikeyMap_test2
-./${TAG}MultikeyMap_test2
+echo MultikeyMap_test2
+./MultikeyMap_test2
