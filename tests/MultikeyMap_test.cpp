@@ -59,8 +59,4 @@ int main(){
   mmap.erase(17,18);
 
   print_map(mmap);
-
-  #ifdef WIN32
-  getchar();
-  #endif
 }
