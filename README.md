@@ -60,7 +60,7 @@ public:
   std::vector<EntryPtr> get2(const Key2& key2);
   
   // gets a list of all entries matching key1 and key2
-  std::vector<EntryPtr> get(const Key1& key1, const Key1& key2);
+  std::vector<EntryPtr> get(const Key1& key1, const Key2& key2);
   
   // erases entry matching EntryPtr
   void erase_entry(EntryPtr e);
